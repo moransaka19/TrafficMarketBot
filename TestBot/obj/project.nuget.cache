@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "DUYtJBWahiik3CykQO1jZ5SZWpaxcu3Hb9Hom5HhLp2LQYEfL1N3y/AZlKbxISwQd0caYLXNEjrx9BbDZUCong==",
+  "success": true,
+  "projectFilePath": "/home/duckkick/Projects/Dotnet/TrafficMarketBot/TestBot/TestBot.csproj",
+  "expectedPackageFiles": [
+    "/home/duckkick/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.9/microsoft.aspnetcore.app.ref.6.0.9.nupkg.sha512"
+  ],
+  "logs": []
+}
