@@ -1,5 +1,4 @@
 using RestEase;
-using TrafficMarketBot.Controllers;
 using TrafficMarketBot.Controllers.Models;
 
 namespace TrafficMarketBot.Clients;
@@ -9,8 +8,16 @@ public interface ITelegramClient
     [Post("sendMessage")]
     Task<CreatedMessage> SendMessageAsync([Body] SendMessageModel model);
 
+    [Get("setWebhook")]
+    Task<HttpResponseMessage> SetWebhookAsync([Body] SetWebhookRequestModel model);
+
     [Post("deleteMessage")]
     Task<HttpResponseMessage> DeleteMessageAsync([Body] DeleteMessageModel model);
+}
+
+public class SetWebhookRequestModel
+{
+    public string Url { set; get; }
 }
 
 public partial class CreatedMessage

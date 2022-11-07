@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using TrafficMarketBot.Clients;
 using TrafficMarketBot.Commands;
 
 namespace TrafficMarketBot.Controllers;
@@ -8,10 +9,14 @@ namespace TrafficMarketBot.Controllers;
 public class WebhookController : Controller
 {
     private readonly IServiceProvider _serviceProvider;
+    private readonly ITelegramClient _telegramClient;
 
-    public WebhookController(IServiceProvider serviceProvider)
+    public WebhookController(
+        IServiceProvider serviceProvider,
+        ITelegramClient telegramClient)
     {
         _serviceProvider = serviceProvider;
+        _telegramClient = telegramClient;
     }
 
     [HttpPost]
@@ -28,6 +33,7 @@ public class WebhookController : Controller
         if (!routes.TryGetValue(routeKey, out var routeValue))
         {
             // TODO: Implement ErrorCommand
+            return Ok();
         }
 
         var commandName = routeValue + "Command";
@@ -45,6 +51,17 @@ public class WebhookController : Controller
         await command.Execute(chatId, messageId);
         
         return Ok();
+    }
 
+    [HttpGet("{url}")]
+    public async Task<IActionResult> SetWebhook([FromRoute] string url)
+    {
+        var model = new SetWebhookRequestModel
+        {
+            Url = $"https://{url}/webhook"
+        };
+        var t = await _telegramClient.SetWebhookAsync(model);
+    
+        return Ok();
     }
 }

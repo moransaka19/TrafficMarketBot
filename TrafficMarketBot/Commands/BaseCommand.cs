@@ -30,7 +30,7 @@ public abstract class BaseCommand
     {
         CreateSendMessageModel(text, keyboardButton);
         await Send();
-        await DeleteUserCommandMessage();
+        // await DeleteUserCommandMessage();
     }
     
     private void CreateSendMessageModel(

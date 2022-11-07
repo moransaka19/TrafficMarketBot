@@ -4,8 +4,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrafficMarketBot", "Traffic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{3B9DE1E8-232F-4A88-A9B9-3D22DC8AC4FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestBot", "TestBot\TestBot.csproj", "{19B3EB14-5262-4723-A396-15EC9A074791}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,9 +18,5 @@ Global
 		{3B9DE1E8-232F-4A88-A9B9-3D22DC8AC4FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B9DE1E8-232F-4A88-A9B9-3D22DC8AC4FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B9DE1E8-232F-4A88-A9B9-3D22DC8AC4FA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{19B3EB14-5262-4723-A396-15EC9A074791}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{19B3EB14-5262-4723-A396-15EC9A074791}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{19B3EB14-5262-4723-A396-15EC9A074791}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{19B3EB14-5262-4723-A396-15EC9A074791}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
