@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TrafficMarketBot.Clients;
 using TrafficMarketBot.Commands;
+using TrafficMarketBot.Commands.Interfaces;
 
 namespace TrafficMarketBot.Controllers;
 
@@ -39,7 +40,7 @@ public class WebhookController : Controller
         var commandName = routeValue + "Command";
         var commandFullname = $"{typeof(ICommand).Namespace}.{commandName}";
         var commandType = typeof(ICommand).Assembly.GetType(commandFullname, true);
-        
+
         if (commandType is null)
         {
             return BadRequest();
@@ -49,7 +50,7 @@ public class WebhookController : Controller
         var chatId = update.Message.Chat.Id;
         var messageId = update.Message.MessageId;
         await command.Execute(chatId, messageId);
-        
+
         return Ok();
     }
 
@@ -61,7 +62,7 @@ public class WebhookController : Controller
             Url = $"https://{url}/webhook"
         };
         var t = await _telegramClient.SetWebhookAsync(model);
-    
+
         return Ok();
     }
 }

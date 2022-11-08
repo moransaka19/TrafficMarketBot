@@ -1,5 +1,5 @@
 using TrafficMarketBot.Clients;
-using TrafficMarketBot.Controllers.Models;
+using TrafficMarketBot.Commands.Interfaces;
 
 namespace TrafficMarketBot.Commands;
 
@@ -12,12 +12,10 @@ public class TestCommand : BaseCommand, ICommand
     public async Task Execute(long chatId, long messageId)
     {
         Init(chatId, messageId);
-        await BuildAndSendAsync("Welcome to Test page", new[]
-        {
-            new[]
-            {
-                new KeyboardButton("main")
-            }
-        });
+		var message = new MessageBuilder(chatId)
+			.SetTextMessage("Welcome to Test page")
+			.AddButtonRow(x => x.AddButton("main"))
+			.Build();
+		await SendMessageAsync(message);
     }
 }

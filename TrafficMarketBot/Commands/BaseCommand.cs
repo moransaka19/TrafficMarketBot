@@ -6,7 +6,6 @@ namespace TrafficMarketBot.Commands;
 public abstract class BaseCommand
 {
     private readonly ITelegramClient _telegramClient;
-    private SendMessageModel _message;
     private long _chatId;
     private long _messageId;
 
@@ -21,40 +20,12 @@ public abstract class BaseCommand
         _messageId = messageId;
     }
     
-    // TODO: Make a fluent API in future
-    // protected static Task Build(this BaseCommand, )
-
-    protected async Task BuildAndSendAsync(
-        string text,
-        KeyboardButton[][] keyboardButton)
+    protected async Task SendMessageAsync(SendMessageModel model)
     {
-        CreateSendMessageModel(text, keyboardButton);
-        await Send();
-        // await DeleteUserCommandMessage();
-    }
-    
-    private void CreateSendMessageModel(
-        string text,
-        KeyboardButton[][] keyboardButton)
-    {
-        _message = new SendMessageModel
-        {
-            Text = text,
-            ChatId = _chatId,
-            ReplyMarkup = new ReplyKeyboardMarkup
-            {
-                Keyboard = keyboardButton,
-                ResizeKeyboard = true,
-                OneTimeKeyboard = true,
-            }
-        };
+        var message = await _telegramClient.SendMessageAsync(model);
     }
 
-    private async Task Send()
-    {
-        var message = await _telegramClient.SendMessageAsync(_message);
-    }
-
+	//TODO: Need test It!
     private async Task DeleteUserCommandMessage()
     {
         await _telegramClient.DeleteMessageAsync(new DeleteMessageModel
