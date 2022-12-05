@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  market-bot:
+    build:
+      context: .
+      dockerfile: ./TrafficMarketBot/Dockerfile
+    ports:
+      - 7089:7089
+    networks:
+      - default
+    depends_on:
+      - redis-cache
+  
+  redis-cache:
+    image: redis/redis-stack-server:latest
+    restart: always 
+    networks:
+      - default
+    ports:
+      - 6379:6379
+
+networks:
+  default:
+    driver: bridge
