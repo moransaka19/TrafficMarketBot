@@ -1,20 +1,25 @@
 using System.Text;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Logging;
+using TelegramBotCore.Data;
 using TelegramBotCore.Services.Interfaces;
 
-namespace TelegramBotCore.Data;
+namespace TelegramBotCore.Services;
 
 public class CommandStorageServiceService : ICommandStorageService
 {
     private readonly IDistributedCache _distributedCache;
     private readonly ICommandFactory _commandFactory;
+    private readonly ILogger<CommandStorageServiceService> _logger;
 
     public CommandStorageServiceService(
         IDistributedCache distributedCache,
-        ICommandFactory commandFactory)
+        ICommandFactory commandFactory,
+        ILogger<CommandStorageServiceService> logger)
     {
         _distributedCache = distributedCache;
         _commandFactory = commandFactory;
+        _logger = logger;
     }
 
     public async Task<IBotCommand> GetPreviousCommand(string username)
@@ -23,7 +28,7 @@ public class CommandStorageServiceService : ICommandStorageService
 
         if (commandTypeName == null)
         {
-            //TODO: Add logger
+            _logger.LogWarning("Previous command is not found for user {username}");
             return _commandFactory.Create("StartCommand")!;
         }
 

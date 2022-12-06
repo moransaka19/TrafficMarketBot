@@ -1,10 +1,10 @@
 using System.Reflection;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using TelegramBotCore.AppConfiguration;
 using TelegramBotCore.Clients;
 using TelegramBotCore.Clients.Models;
 using TelegramBotCore.Services.Interfaces;
-using JsonOptions = Microsoft.AspNetCore.Http.Json.JsonOptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,10 +12,6 @@ builder.Services.AddTelegramBot(builder.Configuration, Assembly.GetExecutingAsse
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.Configure<JsonOptions>(op =>
-{
-    op.SerializerOptions.PropertyNamingPolicy = new SnakeCaseNamingPolicy();
-});
 
 var app = builder.Build();
 
@@ -26,10 +22,17 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapPost("/webhook", async (
-    [FromBody] UpdateMessageModel update,
+    [FromBody] string updateJson,
     IRouteService routeService,
     ICommandFactory commandFactory) =>
 {
+    var jsonOptions = new JsonSerializerOptions
+    {
+        PropertyNamingPolicy = new SnakeCaseNamingPolicy()
+    };
+    
+    var update = JsonSerializer.Deserialize<UpdateMessageModel>(updateJson, jsonOptions);
+    
     var messageText = update.Message.Text;
     var commandPrefix = routeService.GetCommandPrefix(messageText);
     var command = commandFactory.Create(commandPrefix);

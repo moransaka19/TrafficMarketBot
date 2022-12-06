@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using TelegramBotCore.Services.Interfaces;
 
 namespace TelegramBotCore.Services;
@@ -23,8 +24,7 @@ public class CommandFactory : ICommandFactory
 
         if (commandType is null)
         {
-            //TODO: Add logger
-            return null;
+            throw new InvalidOperationException($"Cannot resolve command with {commandName}");
         }
 
         return (IBotCommand)_serviceProvider.GetRequiredService(commandType);

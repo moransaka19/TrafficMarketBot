@@ -4,6 +4,13 @@ services:
     build:
       context: .
       dockerfile: ./TrafficMarketBot/Dockerfile
+    environment:
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=duckkick1337
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_URLS=https://+:7089
+      - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      - ~/.aspnet/https:/https:ro
     ports:
       - 7089:7089
     networks:

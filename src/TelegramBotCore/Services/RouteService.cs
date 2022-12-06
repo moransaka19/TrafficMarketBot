@@ -1,12 +1,19 @@
+using Microsoft.Extensions.Logging;
 using TelegramBotCore.Services.Interfaces;
 
 namespace TelegramBotCore.Services;
 
 public class RouteService : IRouteService
 {
+    private readonly ILogger<RouteService> _logger;
+
+    public RouteService(ILogger<RouteService> logger)
+    {
+        _logger = logger;
+    }
+
     public string GetCommandPrefix(string messageText)
     {
-        // TODO: Store in distributed cache
         var routes = new Dictionary<string, string>
         {
             {"/start", "StartCommand"},
@@ -17,7 +24,7 @@ public class RouteService : IRouteService
 
         if (!routes.TryGetValue(messageText, out var routeValue))
         {
-            // TODO: Add logger
+            _logger.LogWarning("Command with name {messageText} not found", messageText);
             return "NotFoundCommand";
         }
 

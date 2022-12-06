@@ -2,6 +2,7 @@ using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Logging;
 using TelegramBotCore.Clients.Models;
 
 namespace TelegramBotCore.Clients;
@@ -9,22 +10,26 @@ namespace TelegramBotCore.Clients;
 public class TelegramClient
 {
     private readonly HttpClient _httpClient;
+    private readonly ILogger<TelegramClient> _logger;
 
-    public TelegramClient(HttpClient httpClient)
+    public TelegramClient(HttpClient httpClient,
+        ILogger<TelegramClient> logger)
     {
         _httpClient = httpClient;
+        _logger = logger;
     }
 
     public async Task<CreatedMessageModel> SendMessageAsync(SendMessageModel model)
     {
         var response = await PostAsync(model, "sendMessage");
-        var content = await response.Content.ReadAsStringAsync();
-        
+
         if (!response.IsSuccessStatusCode)
         {
-            //TODO: Log it
+            _logger.LogError("The message was not send to chat with id: {chatId}", model.ChatId);
         }
-
+        
+        var content = await response.Content.ReadAsStringAsync();
+        
         return JsonSerializer.Deserialize<CreatedMessageModel>(
             content,
             new JsonSerializerOptions
@@ -39,8 +44,10 @@ public class TelegramClient
 
         if (!response.IsSuccessStatusCode)
         {
-            //TODO: Log it
+            _logger.LogError($"The webhook url was not send to Telegram");
         }
+        
+        _logger.LogInformation("Webhook url has been set: {url}",model.Url);
     }
 
     private async Task<HttpResponseMessage> PostAsync(object model, string uri)
