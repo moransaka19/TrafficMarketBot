@@ -28,7 +28,8 @@ public class CommandStorageServiceService : ICommandStorageService
 
         if (commandTypeName == null)
         {
-            _logger.LogWarning("Previous command is not found for user {username}");
+            _logger.LogWarning($"Previous command is not found for user {username}");
+            
             return _commandFactory.Create("StartCommand")!;
         }
 
