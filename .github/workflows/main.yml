@@ -28,6 +28,4 @@ jobs:
         SCRIPT_BEFORE: |
           mkdir -p projects/telegram-bot
         SCRIPT_AFTER: |
-          cd /home/${{ secrets.REMOTE_USER }}/projects/telegram-bot/src
-          docker-compose build
-          docker-composer up -d
+          cd /home/${{ secrets.REMOTE_USER }}/projects/telegram-bot/src && docker-compose build && docker-composer up -d
