@@ -8,6 +8,8 @@ using TelegramBotCore.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var env = builder.Environment.EnvironmentName;
+builder.Configuration.AddJsonFile($"appsettings.{env}.json");
 builder.Services.AddTelegramBot(builder.Configuration, Assembly.GetExecutingAssembly());
 
 builder.Services.AddEndpointsApiExplorer();
