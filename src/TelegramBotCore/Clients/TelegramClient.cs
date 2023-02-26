@@ -44,7 +44,8 @@ public class TelegramClient
 
         if (!response.IsSuccessStatusCode)
         {
-            _logger.LogError($"The webhook url was not send to Telegram");
+            _logger.LogError($"{response.ReasonPhrase}; status code - {response.StatusCode}\nThe webhook url was not send to Telegram");
+            return;
         }
         
         _logger.LogInformation("Webhook url has been set: {url}",model.Url);
