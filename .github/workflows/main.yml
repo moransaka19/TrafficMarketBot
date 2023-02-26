@@ -30,4 +30,4 @@ jobs:
         SCRIPT_AFTER: |
           cd /home/${{ secrets.REMOTE_USER }}/projects/telegram-bot/src
           docker-compose build
-          docker-composer up
+          docker-composer up -d
