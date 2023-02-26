@@ -25,8 +25,8 @@ jobs:
         remote-host: ${{ secrets.REMOTE_HOST }}
         remote-port: ${{ secrets.REMOTE_PORT }}
         source: '.' # Path to your project directory
-        target: '/home/user/projects/my-project' # Path to the target directory on the remote server
+        target: '/home/${{ secrets.REMOTE_USER }}/projects/telegram-bot' # Path to the target directory on the remote server
 
     - name: Run project
       run: |
-        ssh user@${{ secrets.REMOTE_HOST }} -p ${{ secrets.REMOTE_PORT }} 'cd /home/user/projects/my-project && docker-compose up -d'
+        ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} -p ${{ secrets.REMOTE_PORT }} 'cd /home/${{ secrets.REMOTE_USER }}/projects/telegram-bot && docker-compose up -d'
