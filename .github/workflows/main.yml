@@ -18,7 +18,7 @@ jobs:
         sudo apt install openssh-client -y
 
     - name: Deploy to server
-      uses: easingthemes/ssh-deploy@v2.0.0
+      uses: easingthemes/ssh-deploy@main
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
         remote-user: ${{ secrets.REMOTE_USER }}
