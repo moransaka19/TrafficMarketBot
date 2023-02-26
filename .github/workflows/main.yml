@@ -1,0 +1,33 @@
+name: Deploy to Remote Server
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install SSH
+      run: |
+        sudo apt update
+        sudo apt install openssh-client -y
+
+    - name: Deploy to server
+      uses: easingthemes/ssh-deploy@main
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+        REMOTE_USER: ${{ secrets.REMOTE_USER }}
+        SOURCE: '.' # Path to your project directory
+        TARGET: '/home/${{ secrets.REMOTE_USER }}/projects/telegram-bot' # Path to the target directory on the remote server
+        SCRIPT_BEFORE: |
+          mkdir -p projects/telegram-bot
+          
+    - name: Run project
+      run: |
+        ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} -p ${{ secrets.REMOTE_PORT }} 'cd /home/${{ secrets.REMOTE_USER }}/projects/telegram-bot/src && docker-compose up -d'
