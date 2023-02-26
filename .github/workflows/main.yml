@@ -30,4 +30,4 @@ jobs:
           
     - name: Run project
       run: |
-        ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} -p ${{ secrets.REMOTE_PORT }} 'cd /home/${{ secrets.REMOTE_USER }}/projects/telegram-bot && docker-compose up -d'
+        ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} -p ${{ secrets.REMOTE_PORT }} 'cd /home/${{ secrets.REMOTE_USER }}/projects/telegram-bot/src && docker-compose up -d'
