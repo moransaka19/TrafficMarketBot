@@ -50,7 +50,7 @@ app.MapGet("/webhook/{url}", async (
 {
     var model = new SetWebhookRequestModel
     {
-        Url = $"https://{url}/webhook"
+        Url = $"http://{url}/webhook"
     };
     await telegramClient.SetWebhookAsync(model);
 
