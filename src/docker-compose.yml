@@ -25,7 +25,25 @@ services:
       - default
     ports:
       - 6379:6379
-
+      
+    revese-proxy:
+    image: umputun/nginx-le
+    ports:
+      - 80:80
+      - 443:443
+    container_name: lb
+    volumes:
+        - /etc/ssl/traffic-shop:/etc/nginx/ssl
+        - ~/app/nginx.conf:/etc/nginx/service.conf 
+        - ~/app/data:/srv/.well-known
+    environment:
+       - TZ=Europe/Kiev
+       - LETSENCRYPT=true
+       - LE_EMAIL=duckkick.00@gmail.com
+       - LE_FQDN=traffic-shop.fun       
+    restart: 
+       always
+       
 networks:
   default:
     driver: bridge
