@@ -19,26 +19,27 @@ var app = builder.Build();
 
 // if (app.Environment.IsDevelopment())
 // {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+app.UseSwagger();
+app.UseSwaggerUI();
 // }
 
 app.MapPost("/webhook", async (
     [FromBody] string updateJson,
+    ILogger<Program> logger,
     IRouteService routeService,
     ICommandFactory commandFactory) =>
 {
+    logger.LogInformation("Webhook requested");
     var jsonOptions = new JsonSerializerOptions
     {
         PropertyNamingPolicy = new SnakeCaseNamingPolicy()
     };
-    
     var update = JsonSerializer.Deserialize<UpdateMessageModel>(updateJson, jsonOptions);
-    
+    logger.LogInformation("Message was deserialized successfully");
     var messageText = update.Message.Text;
     var commandPrefix = routeService.GetCommandPrefix(messageText);
     var command = commandFactory.Create(commandPrefix);
-
+    logger.LogInformation("Command was created");
     await command.Execute(update);
 
     return Results.Ok();
