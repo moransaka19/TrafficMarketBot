@@ -1,5 +1,6 @@
 using System.Net.Mime;
 using System.Text;
+using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
@@ -40,7 +41,20 @@ public class TelegramClient
 
     public async Task SetWebhookAsync(SetWebhookRequestModel model)
     {
-        var response = await PostAsync(model, "setWebhook");
+        _logger.LogInformation("Start setup webhook");
+        // var response = await PostAsync(model, "setwebhook");
+        var cert = File.ReadAllBytes("./nginx-selfsigned.crt");
+        _logger.LogInformation("Certificate was found!");
+        var formData = new MultipartFormDataContent();
+        formData.Add(new StringContent(model.Url), "setWebhook");
+        formData.Add(new ByteArrayContent(cert), "certificate", "nginx-selfsigned.crt");
+        
+        var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"https://api.telegram.org/bot5466565571:AAHCf_vF2MW3hFmTVR4fzkiDnX9WLpXovmc/setWebhook")
+        {
+            Content = formData
+        };
+        
+        var response = await _httpClient.SendAsync(requestMessage);
 
         if (!response.IsSuccessStatusCode)
         {
