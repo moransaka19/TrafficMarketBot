@@ -45,14 +45,10 @@ app.MapPost("/webhook", async (
     return Results.Ok();
 });
 
-app.MapGet("/webhook/{url}", async (
-    [FromRoute] string url,
+app.MapPost("/set-webhook", async (
+    [FromBody] SetWebhookRequestModel model,
     TelegramClient telegramClient) =>
 {
-    var model = new SetWebhookRequestModel
-    {
-        Url = url
-    };
     await telegramClient.SetWebhookAsync(model);
 
     return Results.Ok();
