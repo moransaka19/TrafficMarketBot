@@ -24,17 +24,13 @@ app.UseSwaggerUI();
 // }
 
 app.MapPost("/webhook", async (
-    [FromBody] string updateJson,
+    [FromBody] UpdateMessageModel update,
     ILogger<Program> logger,
     IRouteService routeService,
     ICommandFactory commandFactory) =>
 {
     logger.LogInformation("Webhook requested");
-    var jsonOptions = new JsonSerializerOptions
-    {
-        PropertyNamingPolicy = new SnakeCaseNamingPolicy()
-    };
-    var update = JsonSerializer.Deserialize<UpdateMessageModel>(updateJson, jsonOptions);
+    
     logger.LogInformation("Message was deserialized successfully");
     var messageText = update.Message.Text;
     var commandPrefix = routeService.GetCommandPrefix(messageText);
